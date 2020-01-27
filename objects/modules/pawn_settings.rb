@@ -1,4 +1,4 @@
 module PawnSettings
-  COLOR_LIBRARY = [29..36].to_a
-  SPRITE_LIBRARY = "☀ ☯ ☉ ◍ ◉ ◯ ◎".to_a
+  COL_LIB = (31..37).to_a
+  SPRITE_LIB = "◉ ◯".split().to_a
 end
