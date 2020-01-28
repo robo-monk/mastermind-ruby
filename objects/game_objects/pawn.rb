@@ -1,5 +1,6 @@
 require './modules/pawn_settings.rb'
 require './custom_classes/color_string.rb'
+require './game_objects/keys.rb'
 class Pawn
   include PawnSettings
   attr_reader :color, :sprite, :purgable
@@ -39,6 +40,9 @@ class Pawn
   end
   def activated?
     return !purgable 
+  end
+  def color
+    @color
   end
 end
 

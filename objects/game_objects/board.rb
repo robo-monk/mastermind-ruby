@@ -15,17 +15,17 @@ class Board
     end
   end
   public
-  def render select=-1
+  def render select=-1, game_over=false
     puts "│"+SPACER
-    puts @target_row.render
+    puts (!game_over ? "   ?   ?   ?   ?" : @target_row.render )
     puts "│"+SPACER
     rendered_array = Array.new
     @board_matrix.reverse.each_with_index do |row, index|
       rendered_array << row.render
       if @board_matrix.length-index-1==select
-        puts row.render(true)
+        puts row.render(true) + (!game_over ? "  -#{index+1} attempts left" : "- FINAL COMP")
       else
-        puts row.render + (@board_matrix[@board_matrix.length-index-1].generate_evaluation(@target_row)).to_s
+        puts row.render + row.keys.render if row.activated?
       end
       puts "│"+SPACER+"│"
     end

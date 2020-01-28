@@ -2,10 +2,11 @@ require './game_objects/pawn.rb'
 require './modules/board_settings.rb'
 class Row
   include BoardSettings
-  attr_accessor :row_array, :state, :color_preference, :self_eval
+  attr_accessor :row_array, :acivated, :color_preference, :keys
   def initialize color_preference=[6, 6, 6, 6]
     @row_array = Array.new
     @color_preference = color_preference
+    @acivated = false
     build
   end
   private
@@ -17,6 +18,10 @@ class Row
   public
   def activate
     @row_array.each do |pawn| pawn.activate end
+    @acivated = true
+  end
+  def activated?
+    @acivated
   end
   def render selected=false
     rendered_string = String.new
@@ -27,17 +32,7 @@ class Row
     else return "│  " + rendered_string[0..-PAWN_SPACING.length] + " │ -" end
   end
   def generate_evaluation target
-    mapped_row = Array.new()
-    @row_array.each_with_index do |pawn, index|
-      if pawn.activated?
-        if pawn.get_color==target.row_array[index].get_color
-          mapped_row[index] = "b"
-        elsif target.row_array.any?{ |tpawn| !tpawn.activated? && tpawn.get_color==pawn.get_color }
-          mapped_row[index] = "w"
-        end
-      end
-    end
-    return mapped_row
+    @keys = Keys.new(self, target)
   end
   def at x
     @row_array[x]

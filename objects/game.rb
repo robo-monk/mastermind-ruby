@@ -13,9 +13,13 @@ class Game
     
   end
   def next_state
-    @turns += 1
-    board.board_matrix[turns].activate
-    if @turns<=BOARD_DIMENSIONS[1]-1 then edit_board end
+    board.board_matrix[turns].generate_evaluation(@board.target_row)
+    if @turns<BOARD_DIMENSIONS[1]-1
+      @turns += 1
+      current_row = board.board_matrix[turns]
+      current_row.activate
+      edit_board 
+    else game_over board.board_matrix[turns] end
   end
   def edit_board
     cursor=BOARD_DIMENSIONS[0]**2
@@ -43,6 +47,11 @@ class Game
     @board.sprite_change_at(cursor%BOARD_DIMENSIONS[0], @turns)
     @board.reverse_row @turns
     next_state
+  end
+  def game_over final_row, won=false
+    Screen.clear
+    @board.render(@turns, true)
+    if final_row.keys.all_black? then puts "WON" else puts "TRY AGAIN" end
   end
 end
 
